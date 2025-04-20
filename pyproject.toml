@@ -1,0 +1,112 @@
+[project]
+name = "rag-pipeline"
+version = "0.1.0"
+description = "A RAG (Retrieval-Augmented Generation) pipeline with graph-based query processing"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+dependencies = [
+    "chromadb>=0.4.22",
+    "langchain>=0.1.0",
+    "langchain-community>=0.0.10",
+    "langchain-core>=0.1.10",
+    "langchain-google-genai>=0.0.5",
+    "langgraph>=0.0.15",
+    "google-cloud-aiplatform>=1.38.1",
+    "google-generativeai>=0.3.2",
+    "pydantic>=2.5.2",
+    "tiktoken>=0.5.1",
+    "python-dotenv>=1.0.0",
+    "tqdm>=4.66.1"
+]
+requires-python = ">=3.8"
+readme = "README.md"
+license = {text = "MIT"}
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.3",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.6.0",
+    "flake8-docstrings>=1.7.0",
+    "flake8-bugbear>=23.12.6",
+    "flake8-comprehensions>=3.14.0",
+    "flake8-simplify>=0.21.0",
+    "flake8-import-order>=0.18.2",
+    "bandit>=1.7.7",
+    "types-all>=0.1.0"
+]
+notebook = [
+    "jupyter>=1.0.0",
+    "ipykernel>=6.25.0"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-ra -q"
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*", "setup.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "pass",
+    "raise ImportError"
+]
+
+[tool.hatch.envs.default]
+dependencies = [
+    "pytest",
+    "pytest-cov",
+    "black",
+    "isort",
+    "flake8",
+    "mypy"
+]
+
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "pytest --cov=src {args:tests}"
+lint = "black {args:.} && isort {args:.} && flake8 {args:.}"
+type = "mypy {args:src}"
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+skips = ["B101"] 
