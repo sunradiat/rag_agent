@@ -199,6 +199,45 @@ result = query_pipeline.process_query(
 )
 ```
 
+### Agent-based Query Processing
+
+The project also provides an agent-based approach for more sophisticated query handling:
+
+```python
+from src import QueryProcessorGraph
+
+# Initialize the agent
+agent = QueryProcessorGraph()
+
+# Process a simple query
+result = agent.process_query(
+    query="What is the capital of France?",
+    company="Your Company",  # Optional
+    service="Your Service"   # Optional
+)
+
+# Process a complex query with conversation history
+result = agent.process_query(
+    query="Compare and contrast the economic policies of France and Germany",
+    company="Your Company",
+    service="Your Service"
+)
+
+# The agent maintains conversation history for follow-up questions
+follow_up = agent.process_query(
+    query="What about their environmental policies?",
+    company="Your Company",
+    service="Your Service"
+)
+```
+
+The agent provides several advantages:
+- Maintains conversation context
+- Handles both simple and complex queries
+- Supports company and service-specific filtering
+- Automatically decomposes complex queries
+- Provides detailed query analysis
+
 ### Interactive Demo
 
 Run the Jupyter notebook `rag_pipeline_demo.ipynb` for an interactive demonstration.
