@@ -3,6 +3,8 @@ from langgraph.graph import Graph, StateGraph
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
+import networkx as nx
+import matplotlib.pyplot as plt
 
 from .query_processor import QueryProcessor
 from .query_decomposer import QueryDecomposer
@@ -242,4 +244,37 @@ class QueryProcessorGraph:
             "sub_questions": final_state["sub_questions"] if final_state["is_complex"] else None,
             "sub_answers": final_state["sub_answers"] if final_state["is_complex"] else None,
             "conversation_history": final_state["conversation_history"]
-        } 
+        }
+    
+    def visualize_graph(self, output_path: str = "query_processor_graph.png"):
+        """Visualize the query processing graph"""
+        # Create a directed graph
+        G = nx.DiGraph()
+        
+        # Add nodes
+        for node in self.graph.nodes:
+            G.add_node(node)
+        
+        # Add edges
+        for edge in self.graph.edges:
+            G.add_edge(edge[0], edge[1])
+        
+        # Set up the plot
+        plt.figure(figsize=(12, 8))
+        pos = nx.spring_layout(G)
+        
+        # Draw nodes
+        nx.draw_networkx_nodes(G, pos, node_size=2000, node_color='lightblue')
+        
+        # Draw edges
+        nx.draw_networkx_edges(G, pos, arrows=True, arrowsize=20)
+        
+        # Draw labels
+        nx.draw_networkx_labels(G, pos, font_size=10, font_family='sans-serif')
+        
+        # Save the plot
+        plt.axis('off')
+        plt.savefig(output_path, dpi=300, bbox_inches='tight')
+        plt.close()
+        
+        print(f"Graph visualization saved to {output_path}") 

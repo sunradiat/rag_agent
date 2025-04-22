@@ -253,3 +253,86 @@ Run the Jupyter notebook `rag_pipeline_demo.ipynb` for an interactive demonstrat
 ## License
 
 MIT License 
+
+# RAG Agent Query Processor
+
+This project implements a Retrieval-Augmented Generation (RAG) agent with a query processing pipeline using a graph-based workflow.
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd rag_agent
+```
+
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+### Basic Usage
+
+```python
+from src.query_processor_graph import QueryProcessorGraph
+
+# Initialize the query processor
+query_processor = QueryProcessorGraph(input_folder="path/to/your/documents")
+
+# Process a query
+result = query_processor.process_query(
+    query="Your question here",
+    company="optional_company_name",
+    service="optional_service_name"
+)
+
+# Print the result
+print(result["answer"])
+print("Sources:", result["sources"])
+```
+
+### Visualizing the Query Processing Graph
+
+You can visualize the query processing workflow using the built-in visualization feature:
+
+```python
+# Generate and save the graph visualization
+query_processor.visualize_graph()  # Saves to query_processor_graph.png by default
+
+# Or specify a custom output path
+query_processor.visualize_graph("custom_graph.png")
+```
+
+The visualization will show:
+- All processing nodes (rewrite_query, analyze_complexity, etc.)
+- The flow of data between nodes
+- The conditional branching in the workflow
+
+## Features
+
+- Query rewriting for better understanding
+- Complexity analysis
+- Query decomposition for complex questions
+- Document retrieval with company/service filtering
+- Document reranking
+- Answer generation with source attribution
+- Conversation history tracking
+- Graph visualization of the processing workflow
+
+## Project Structure
+
+```
+src/
+├── query_processor_graph.py  # Main graph implementation
+├── query_processor.py       # Query processing logic
+├── query_decomposer.py      # Query decomposition
+├── retriever.py            # Document retrieval
+├── reranker.py            # Document reranking
+└── generation.py          # Answer generation
+```
+
+## Requirements
+
+See `requirements.txt` for the complete list of dependencies. 
